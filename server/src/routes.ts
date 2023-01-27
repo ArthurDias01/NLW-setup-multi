@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma";
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { checkToken } from "./middleware/checktoken";
-import { firestoreDB, auth } from "../lib/firebase";
+import { auth } from "../lib/firebase";
 import { createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
 
 

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma-generate": "prisma generate",
+    "start": "npx prisma generate && tsx src/server.ts"
   },
   "keywords": [],
   "author": "",

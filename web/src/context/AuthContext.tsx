@@ -104,7 +104,6 @@ export const AuthProvider = ({ children }: IAuthContextProvider) => {
   useEffect(() => {
     return auth.onIdTokenChanged(
       async (user) => {
-        console.log('check')
         if (!user) {
           setUser(null);
           nookies.destroy(undefined, "token");

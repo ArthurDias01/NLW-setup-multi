@@ -16,7 +16,6 @@ export function Home() {
     const checkUser = () => {
       const token = parseCookies().token;
       if (!user && !isLoggingIn && !token) {
-        console.log('user no home', user, isLoggingIn)
         toast.error('Você precisa estar logado para acessar essa página')
         navigate('/');
       }

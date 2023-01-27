@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useAuth } from "../context/AuthContext";
 import { X } from "phosphor-react";
+import { parseCookies } from "nookies";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 const summaryDates = generateDatesFromYearBeginning();
@@ -24,7 +25,7 @@ export function SummaryTable() {
 
   useEffect(() => {
     const getSummary = async () => {
-      const token = await user?.getIdToken();
+      const token = parseCookies().token;
       if (user) {
         api.get('/summary', {
           headers: {
