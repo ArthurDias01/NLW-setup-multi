@@ -6,11 +6,17 @@ import { appRoutes } from './routes';
 
 const app = Fastify();
 
+//add res header in all routes to allow cors
+app.addHook("onSend", (req, res, payload, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  console.log('req', JSON.stringify(req.headers, null, 2))
+  next();
+});
 
 app.register(cors, {
-  origin: "http://localhost:5173",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization", "Origin", "X-Requested-With", "Accept"],
+  allowedHeaders: ["Content-Type", "Authorization", "Origin", "X-Requested-With", "Accept", 'Access-Control-Allow-Origin'],
   credentials: true,
   optionsSuccessStatus: 200,
 });

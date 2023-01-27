@@ -29,8 +29,10 @@ export function SummaryTable() {
       if (user) {
         api.get('/summary', {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+
         }).then(response => {
           setSummary(response.data);
         }).catch(error => {
