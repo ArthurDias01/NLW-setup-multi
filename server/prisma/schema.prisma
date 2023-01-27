@@ -10,16 +10,28 @@ generator erd {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String          @id @unique @default(uuid())
+  email         String          @unique @default(dbgenerated())
+  firebaseId    String          @unique
+  habits        Habit[]
+  habitWeekDays HabitWeekDays[]
+
+  @@map("users")
+}
+
 model Habit {
-  id        String          @id @default(uuid())
-  title     String
-  createdAt DateTime        @default(now())
-  dayHabits DayHabit[]
-  weekDays  HabitWeekDays[]
+  id         String          @id @default(uuid())
+  title      String
+  created_at DateTime        @default(now())
+  dayHabits  DayHabit[]
+  weekDays   HabitWeekDays[]
+  user_id    String
+  user       User            @relation(fields: [user_id], references: [id])
 
   @@map("habits")
 }
@@ -28,8 +40,9 @@ model HabitWeekDays {
   id       String @id @default(uuid())
   habit_id String
   week_day Int
-
-  habit Habit @relation(fields: [habit_id], references: [id])
+  user_id  String
+  user     User   @relation(fields: [user_id], references: [id])
+  habit    Habit  @relation(fields: [habit_id], references: [id])
 
   @@unique([habit_id, week_day])
   @@map("habit_week_days")
