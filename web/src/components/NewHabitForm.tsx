@@ -3,11 +3,13 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "../lib/axios";
+import { useAuth } from "../context/AuthContext";
 
 const availableWeekDays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
 
 export function NewHabitForm() {
 
+  const { user } = useAuth();
   const [title, setTitle] = useState<string>('');
   const [weekDays, setWeekDays] = useState<number[]>([]);
 
@@ -25,7 +27,11 @@ export function NewHabitForm() {
     if (!title || weekDays.length === 0) return toast.error('Por favor, Preencha todos os campos');
 
     try {
-      await api.post('/habits', { title, weekDays })
+      await api.post('/habits', { title, weekDays }, {
+        headers: {
+          Authorization: `Bearer ${user!.getIdToken()}`
+        }
+      })
       toast.success('Hábito criado com sucesso');
       setTitle('');[]
       setWeekDays([])

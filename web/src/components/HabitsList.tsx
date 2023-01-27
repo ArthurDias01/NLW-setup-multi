@@ -3,6 +3,7 @@ import { Check } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { api } from "../lib/axios";
 import dayjs from "dayjs";
+import { useAuth } from "../context/AuthContext";
 
 interface Props {
   date: Date;
@@ -13,31 +14,45 @@ interface HabitInfo {
   possibleHabits: {
     id: string;
     title: string;
-    createdAt: string;
+    created_at: string;
   }[],
   completedHabits: string[],
 }
 
 export function HabitsList({ date, onCompletedChanged }: Props) {
 
+  const { user } = useAuth();
   const [habitsInfo, setHabitsInfo] = useState<HabitInfo>();
 
   const isDayInPast = dayjs(date).endOf('day').isBefore(dayjs(), 'day');
 
 
   useEffect(() => {
-    api.get('/day', {
-      params: {
-        date: date.toISOString(),
-      }
-    }).then(response => {
-      setHabitsInfo(response.data)
-      // console.log(response.data)
-    })
+    const getDay = async () => {
+      const token = await user?.getIdToken();
+      api.get('/day', {
+        params: {
+          date: date.toISOString(),
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(response => {
+        setHabitsInfo(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+    getDay();
   }, [])
 
   async function handleToggleHabit(habitId: string) {
-    await api.patch(`/habits/${habitId}/toggle`)
+    const token = await user?.getIdToken();
+    await api.patch(`/habits/${habitId}/toggle`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     const isHabitAlreadyComplete = habitsInfo!.completedHabits.includes(habitId);
 
     let completedHabits: string[] = [];
