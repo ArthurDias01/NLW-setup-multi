@@ -109,8 +109,9 @@ export function LoginForm() {
                 disabled={isLoggingIn}
               >
                 {isLoggingIn ? (
-                  <div>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" />
+                  <div className="flex flex-row gap-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white" />
+                    Carregando...
                   </div>
                 ) : 'Registrar'
                 }
