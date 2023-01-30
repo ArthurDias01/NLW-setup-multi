@@ -42,7 +42,7 @@ Added to the original project:
   - [React-Hot-toast](https://react-hot-toast.com/)
    
   - [x] Deploy on Vercel
-  - [Railway](https://vercel.com/)
+  - [Vercel](https://vercel.com/)
 
 ## 🧪 SOLID
 
