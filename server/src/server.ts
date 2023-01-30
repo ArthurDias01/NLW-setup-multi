@@ -9,7 +9,6 @@ const app = Fastify();
 //add res header in all routes to allow cors
 app.addHook("onSend", (req, res, payload, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  console.log('req', JSON.stringify(req.headers, null, 2))
   next();
 });
 
@@ -26,7 +25,7 @@ app.register(appRoutes);
 
 app.listen({
   port: 3333,
-  host: "0.0.0.0"
+  host: "0.0.0.0",
 }).then(() => {
   console.log("Server is running on port 3333!");
 })

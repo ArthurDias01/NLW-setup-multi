@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import jwt_decode from 'jwt-decode';
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/cache";
 
 interface jwtToken {
   iss: string;
@@ -28,9 +28,10 @@ export interface UFastifyRequest extends FastifyRequest {
 export async function checkToken(request: FastifyRequest, response: FastifyReply) {
 
   const token = request.headers.authorization?.replace('Bearer ', '');
-  // console.log('token exists', typeof token === 'string')
+
 
   if (!token) {
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>> no token')
     return response.status(401).send({ error: 'User not Found or token expired' });
   }
 
@@ -40,7 +41,7 @@ export async function checkToken(request: FastifyRequest, response: FastifyReply
   const now = new Date().getTime();
 
   if (decoded.exp * 1000 < now) {
-
+    // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>> Expired token', JSON.stringify(decoded, null, 2))
 
     return response.status(401).send({ error: 'User not Found or token expired' });
   }
@@ -52,6 +53,7 @@ export async function checkToken(request: FastifyRequest, response: FastifyReply
     }
   });
 
+  // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>> user', JSON.stringify(user, null, 2));
   if (!user) {
     return response.status(401).send({ error: 'User not Found or token expired' });
   }
