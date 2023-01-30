@@ -13,7 +13,7 @@ app.addHook("onSend", (req, res, payload, next) => {
 });
 
 app.register(cors, {
-  origin: "*",
+  origin: ["https://habitsio.vercel.app", "https://habitsio-arthurdias01.vercel.app", /\.habitsio.vercel\.app$/],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "Origin", "X-Requested-With", "Accept", 'Access-Control-Allow-Origin'],
   credentials: true,

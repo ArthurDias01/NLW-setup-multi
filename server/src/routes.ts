@@ -49,16 +49,16 @@ export async function appRoutes(app: FastifyInstance) {
     });
 
     if (!user === undefined || user === null) {
-      await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           firebaseId,
           email,
         }
-      })
+      });
+      return { user: newUser };
+    } else {
+      return { user };
     }
-
-
-    return { user };
   });
 
   app.post("/habits", async (request, response) => {
