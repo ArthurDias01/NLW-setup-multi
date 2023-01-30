@@ -23,8 +23,10 @@ export function SummaryTable() {
   const [summary, setSummary] = useState<ISummary>([]);
 
 
+
   useEffect(() => {
     const getSummary = async () => {
+
       const token = parseCookies().token;
       if (user) {
         api.get('/summary', {
@@ -32,9 +34,9 @@ export function SummaryTable() {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-
         }).then(response => {
           setSummary(response.data);
+          // console.log('SUMMARY DATA', response.data)
         }).catch(error => {
           console.log(error)
         })
@@ -54,7 +56,7 @@ export function SummaryTable() {
           <button
             type="button"
             className="w-fit border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors
-          focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-background
+          focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-background mr-10
           "
             onClick={signOut}
           >
@@ -75,6 +77,8 @@ export function SummaryTable() {
         <div className="grid grid-rows-7 grid-flow-col gap-3">
           {summary.length > 0 && summaryDates.map(date => {
             const dayInSummary = summary?.find(day => dayjs(date).isSame(day.date, 'day'));
+
+            // console.log('DAY IN SUMMARY', dayInSummary)
 
             return (
               <HabitDay key={date.toString()} date={date} defaultCompleted={dayInSummary?.completed} amount={dayInSummary?.amount} />

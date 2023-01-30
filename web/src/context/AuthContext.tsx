@@ -54,8 +54,7 @@ export const AuthProvider = ({ children }: IAuthContextProvider) => {
       await api.post('/register', {
         email: user.email,
         firebaseId: user.uid,
-      })
-
+      });
     } catch (error) {
       console.log(error)
     } finally {
@@ -67,6 +66,12 @@ export const AuthProvider = ({ children }: IAuthContextProvider) => {
     try {
       setIsLogginIn(true);
       await signInWithEmailAndPassword(auth, email, password);
+
+      // console.log('auth.currentUser', auth.currentUser?.uid)
+      await api.post('/checkuserexists', {
+        email,
+        firebaseId: auth.currentUser!.uid,
+      });
     } catch (error) {
       console.log(error)
     } finally {

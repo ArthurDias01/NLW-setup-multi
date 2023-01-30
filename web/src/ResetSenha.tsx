@@ -16,14 +16,14 @@ export function ResetSenha() {
   const onSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      api.post('/resetsenha', {
+      api.post('/resetpassword', {
         email
       })
       toast.success(`Email de reset de senha enviado com sucesso!`)
       navigate('/');
     } catch (error: any) {
       toast.error(error)
-      console.log(error)
+      // console.log(error)
     }
   }
 

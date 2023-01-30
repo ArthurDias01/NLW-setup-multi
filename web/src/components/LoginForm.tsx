@@ -13,8 +13,6 @@ export function LoginForm() {
 
   const navigate = useNavigate();
 
-  console.log(user, isLoggingIn)
-
   const handleChangeEmail = (e: any) => {
     setEmail(e.target.value)
   }
@@ -25,26 +23,28 @@ export function LoginForm() {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    console.log('submit', email, password)
+    // console.log('submit', email, password)
     try {
+      if (email === "" || password === "") throw new Error('Preencha todos os campos')
       await signInWithEmail({ email, password });
       toast.success(`Login realizado com sucesso! Bem vindo(a) ${email}`)
       navigate('/home');
-    } catch (error) {
-      toast.error('Erro ao realizar login')
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error?.message === undefined ? 'Erro ao criar conta' : error.message)
     }
   }
 
   const onSubmitCreateAccount = async (e: any) => {
     e.preventDefault();
+
+    // console.log('submit', email, password)
     try {
+      if (email === "" || password === "") throw new Error('Preencha todos os campos')
       await signUpWithEmail({ email, password });
-      toast.success(`Conta criada com sucesso! Bem vindo(a) ${user!.email}`)
+      toast.success(`Conta criada com sucesso! Bem vindo(a) ${email}`)
       navigate('/home');
-    } catch (error) {
-      toast.error('Erro ao realizar login')
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error?.message === undefined ? 'Erro ao criar conta' : error.message)
     }
   }
 
@@ -70,12 +70,20 @@ export function LoginForm() {
               />
 
               <div className="flex flex-row justify-between">Ainda não possui conta?
-                <button className="font-semibold text-violet-700 underline" onClick={() => setNewAccount(true)}>Registre-se</button>
+                <button className="font-semibold text-green-600 underline" onClick={() => setNewAccount(true)}>Registre-se</button>
               </div>
 
               <button className="font-semibold text-violet-700 underline" onClick={() => navigate('/resetsenha')}>Esqueceu sua senha?</button>
               <button type="submit" className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-green-600 hover:bg-green-500 transition-colors" disabled={false}>
-                {isLoggingIn ? 'Carregando...' : 'Entrar'}
+                {isLoggingIn ? (
+                  // spinner with tailwindcss
+                  <div className="flex flex-row gap-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white" />
+                    Carregando...
+                  </div>
+                ) :
+                  'Entrar'
+                }
               </button>
             </form>
           )
@@ -97,9 +105,15 @@ export function LoginForm() {
                 }}
               />
               <button className="font-semibold text-violet-700 underline" onClick={() => setNewAccount(false)}>Fazer Login</button>
-              <button type="submit" className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-green-600 hover:bg-green-500 transition-colors" disabled={false}
+              <button type="submit" className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-green-600 hover:bg-green-500 transition-colors"
+                disabled={isLoggingIn}
               >
-                {isLoggingIn ? 'Carregando...' : 'Registrar'}
+                {isLoggingIn ? (
+                  <div>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" />
+                  </div>
+                ) : 'Registrar'
+                }
               </button>
             </form>
           )
