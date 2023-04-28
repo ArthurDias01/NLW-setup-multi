@@ -12,7 +12,7 @@
 <br>
 
 # Habito.io 😎
-Try it out! [Habit.io](https://habitio.vercel.app) 
+Try it out! [Habit.io](https://habitsio.vercel.app/) 
 ## 🧪 Technologies
 
 This project was developed using the following technologies:
